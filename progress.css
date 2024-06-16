@@ -1,0 +1,210 @@
+:root {
+    /* основной цвет дуги загрузки и переключателей */
+    --primColor: #06f;
+
+    /* цвет тени при выключенном переключателе */
+    --shadColor: #dfe6f0;
+
+    /* размер текста и чисел в Value в API */
+    --fontSize: 20px;
+
+    /* относительный размер переключателей */
+    --switchSize: 7;
+
+    /* относительный размер дуги загрузки */
+    --barSize: 15;
+
+    /* скорость вращения дуги загрузки */
+    --barSpeed: 3s;
+}
+
+body {
+    font-family: 'Arial', 'Verdana', sans-serif;
+    font-weight: normal;
+    font-size: var(--fontSize);
+}
+
+/* обертка Progress и API */
+.progress-wrapper {
+    padding: 4vw;
+}
+
+/* адаптация под ориентацию экрана */
+@media screen and (orientation: portrait) {
+    .progress-wrapper {
+        width: calc(100vw - 16px);
+        height: calc(100vh - 16px);
+    }
+
+    .progress-bar {
+        width: 90vw;
+        height: 30vh;
+        margin-bottom: 0;
+        padding: 4vh 0;
+    }
+
+    .progress-bar p {
+        min-width: 50vw;
+        min-height: 50vw;
+    }
+
+    .progress-api {
+        width: 90vw;
+        height: 40vh;
+        margin-top: 8vh;
+    }
+
+    .progress-api table.progress {
+        max-width: 70vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (orientation: landscape) {
+    .progress-wrapper {
+        width: calc(100vw - 16px);
+        height: calc(100vh - 16px);
+    }
+
+    .progress-bar {
+        display: inline-block;
+        width: 40vw;
+        height: calc(90vh - 16px);
+    }
+
+    .progress-bar p {
+        min-width: 40vh;
+        min-height: 40vh;
+    }
+
+    .progress-api {
+        display: inline-block;
+        width: 40vw;
+        height: calc(90vh - 16px);
+        padding-left: 8vw;
+    }
+
+    .progress-api table.progress {
+        max-width: 40vw;
+    }
+}
+
+.progress-bar {
+    position: relative;
+}
+
+.progress-api {
+    position: relative;
+}
+
+/* стилизация и анимация дуги загрузки */
+.progress-bar p {
+    width: calc(var(--barSize) * 10px);
+    height: calc(var(--barSize) * 10px);
+    margin-left: auto;
+    margin-right: auto;
+    background: conic-gradient(var(--primColor) 36deg, var(--shadColor) 0%);
+    border-radius: 50%;
+    animation: scaleProgress var(--barSpeed) linear infinite;
+    animation-play-state: running;
+}
+
+
+@keyframes scaleProgress {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-bar p::before {
+    position: absolute;
+    content: "";
+    inset: 16px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* стилизация API */
+input[type='text'].progress {
+    position: relative;
+    display: inline-block;
+    width: calc(var(--switchSize) * 8 *1px);
+    height: calc(var(--switchSize) * 5 *1px);
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 60px;
+    box-shadow: none;
+    border: 2px solid black;
+    font-weight: bold;
+    font-size: var(--fontSize);
+}
+
+.progress-api table.progress {
+    width: 260px;
+    table-layout: fixed;
+    font-size: var(--fontSize);
+}
+
+
+/* стилизация переключателей */
+.slideon {
+    position: relative;
+    display: inline-block;
+    width: calc(var(--switchSize) * 9px);
+    height: calc(var(--switchSize) * 5px);
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slideon>input {
+    display: none;
+}
+
+input.slideon {
+    display: none;
+}
+
+
+.slideon-slider {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(var(--switchSize) * 8px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--shadColor);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slideon-slider:before {
+    position: absolute;
+    content: "";
+    height: calc(var(--switchSize) * 4px);
+    width: calc(var(--switchSize) * 4px);
+    left: calc(var(--switchSize) / 2 * 1px);
+    bottom: calc(var(--switchSize) / 2 * 1px);
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.45);
+    -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.45);
+    box-shadow: 0px 0px 3px 0px rgb(0, 0, 0, 0.45);
+}
+
+.slideon input:checked~.slideon-slider {
+    background-color: var(--primColor);
+}
+
+.slideon input:checked~.slideon-slider:before {
+    -webkit-transform: translateX(calc(var(--switchSize) * 4px));
+    -ms-transform: translateX(calc(var(--switchSize) * 4px));
+    transform: translateX(calc(var(--switchSize) * 4px));
+}
